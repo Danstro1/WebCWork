@@ -253,6 +253,10 @@ select::-ms-expand {
 }
 
 .personal-info{
+    position: absolute;
+    top: 35%;
+    left: 35%;
+    transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
     gap: 30px;
@@ -273,7 +277,8 @@ select::-ms-expand {
 
 .personal-info-change{
     position: absolute;
-    top: 170px;
+    top: 150px;
+    left: 505px;
 }
 
 .login-reg {
