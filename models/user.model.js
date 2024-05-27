@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema(
 			required: true,
 			minlength: 6,
 		},
+		money: {
+			type: Number,
+			default: 100000,
+		},
 		isWorker: {
 			type: Boolean,
 			default: false,
