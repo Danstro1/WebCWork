@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Регистрация работника</title>
+    <link rel="stylesheet" href="../../style.css" />
+    <link rel="stylesheet" href="admin.css">
+  </head>
+  <body>
+    <header>
+        <img class="logo" src="../../assets/logo.svg" alt="logo" />
+        <div class="profile-links">
+            <nav class="exit"><a id="exit" href="../../auth/login/login.html">Выход</a></nav>
+        </div>
+    </header>
+    <form class="login-reg reg" action="post">
+      <div class="register">Регистрация работника</div>
+      <input class="regName" type="text" placeholder="Имя" />
+      <input class="regSurname" type="text" placeholder="Фамилия" />
+      <input class="regPhone" type="tel" placeholder="Телефон" />
+      <input class="regEmail" type="text" placeholder="Email" />
+      <input class="regPassword" type="password" placeholder="Пароль" />
+      <button class="submit-btn reg-btn">Зарегистрировать работника</button>
+    </form>
+    
+    <table id="workersTable" class="workers-table">
+      <thead>
+        <tr>
+          <th>Имя</th>
+          <th>Фамилия</th>
+          <th>Телефон</th>
+          <th>Email</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    
+    <script src="admin-page.js"></script>
+    <script src="../../exit.js"></script>
+  </body>
+</html>

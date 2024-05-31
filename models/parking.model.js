@@ -11,6 +11,19 @@ const parkingSchema = new mongoose.Schema(
             required: true,
             default: 0,
         },
+        totalPlaces: {
+            type: Number,
+            required: true,
+            default: 0,
+        },
+        xCoordinate: {
+            type: Number,
+            required: true,
+        },
+        yCoordinate: {
+            type: Number,
+            required: true,
+        },
         cost: {
             type: Number,
             required: true,

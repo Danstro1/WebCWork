@@ -2,6 +2,7 @@ import Car from "../models/car.model.js";
 import Parking from "../models/parking.model.js";
 import Place from "../models/place.model.js";
 import PlaceInfo from "../models/placeInfo.model.js";
+import User from "../models/user.model.js";
 
 export const getParkings = async (req, res) => {
     try {
@@ -16,13 +17,14 @@ export const getParkings = async (req, res) => {
     }
 }
 
-
 export const addParkings = async (req, res) => {
     try {
-        const { address, cost } = req.body;
+        const { address, xCoordinate, yCoordinate, cost } = req.body;
 
         const parkings = await Parking.create({
             address,
+            xCoordinate,
+            yCoordinate,
             cost,
         })
 
@@ -30,35 +32,30 @@ export const addParkings = async (req, res) => {
 
         res.status(200).json(parkings);
     } catch (error) {
-        console.log("Error in getParkings controller: ", error.message);
+        console.log("Error in addParkings controller: ", error.message);
         res.status(500).json({ error: "Internal server error" });
     }
 }
 
 export const addPlaces = async (req, res) => {
     try {
-        const { number } = req.body;
+        const { parkingAddress } = req.body;
 
-        const { id: parkingId } = req.params;
+        const parking = await Parking.findOne({ address: parkingAddress })
 
-        const parking = await Parking.findOne({ _id: parkingId });
+        const newPlace = await Place.create({
+            parking
+        })
 
-        const place = await Place.findOne({ number, parking })
-
-        if (!place) {
-            const newPlace = await Place.create({
-                number,
-                parking
-            })
-
-            if (newPlace) {
-                parking.freePlaces++
-            }
-
-            await Promise.all([newPlace.save(), parking.save()]);
-
-            res.status(200).json(newPlace);
+        if (newPlace) {
+            parking.freePlaces++
+            parking.totalPlaces++
         }
+
+        await Promise.all([newPlace.save(), parking.save()]);
+
+        res.status(200).json(newPlace);
+
 
     } catch (error) {
         console.log("Error in addPlaces controller: ", error.message);
@@ -66,17 +63,73 @@ export const addPlaces = async (req, res) => {
     }
 }
 
+export const removePlace = async (req, res) => {
+    try {
+        const { parkingAddress } = req.body;
+
+        const parking = await Parking.findOne({ address: parkingAddress })
+
+        if (!parking) {
+            return res.status(404).json({ error: "Parking not found" });
+        }
+
+        if (parking.freePlaces <= 0) {
+            return res.status(400).json({ error: "No free places to remove" });
+        }
+
+        const place = await Place.findOne({ parking: parking._id, status: "free" });
+
+        if (!place) {
+            return res.status(404).json({ error: "Place not found" });
+        }
+
+        await Place.deleteOne({ _id: place._id });
+
+        parking.freePlaces--;
+        parking.totalPlaces--;
+
+        await parking.save();
+
+        res.status(200).json({ message: "Place removed successfully" });
+
+    } catch (error) {
+        console.log("Error in removePlace controller: ", error.message);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+export const changeCost = async (req, res) => {
+    try {
+        const { cost, parkingAddress } = req.body;
+
+        const parking = await Parking.findOne({ address: parkingAddress })
+
+        if (!parking) {
+            return res.status(404).json({ error: "Parking not found" });
+        }
+
+        parking.cost = cost;
+
+        await parking.save();
+
+        res.status(200).json({ message: "Cost changed successfully" });
+
+    } catch (error) {
+        console.log("Error in changeCost controller: ", error.message);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+
 export const parkCar = async (req, res) => {
     try {
-        const { carNumber } = req.body;
-
-        const { id: parkingId } = req.params;
+        const { carNumber, parkingAddress } = req.body;
 
         const car = await Car.findOne({ number: carNumber });
 
-        const parking = await Parking.findOne({ _id: parkingId })
+        const parking = await Parking.findOne({ address: parkingAddress })
 
-        if (car && parking) {
+        if (car && parking && parking.freePlaces > 0) {
             const place = await Place.findOne({ status: "free" });
             place.status = "occupied";
             const placeInfo = await PlaceInfo.create({
@@ -87,7 +140,7 @@ export const parkCar = async (req, res) => {
 
             await Promise.all([place.save(), parking.save(), placeInfo.save()]);
 
-            res.status(200).json({place: placeInfo});
+            res.status(200).json({ place: placeInfo });
         }
 
     } catch (error) {
@@ -98,9 +151,11 @@ export const parkCar = async (req, res) => {
 
 export const unparkCar = async (req, res) => {
     try {
-        const { carNumber } = req.body;
+        const { carNumber, money } = req.body;
 
         const car = await Car.findOne({ number: carNumber });
+
+        const owner = await User.findOne({ _id: car.owner });
 
         const placeInfo = await PlaceInfo.findOne({ occupiedBy: car._id, endedAt: null });
 
@@ -108,16 +163,17 @@ export const unparkCar = async (req, res) => {
 
         const parking = await Parking.findOne({ _id: place.parking });
 
-        if(placeInfo && place && parking){
+        if (placeInfo && place && parking) {
             placeInfo.endedAt = new Date();
             place.status = "free";
             parking.freePlaces++;
-            await Promise.all([placeInfo.save(), place.save(), parking.save()]);
+            owner.money = owner.money - money;
+            await Promise.all([placeInfo.save(), place.save(), parking.save(), owner.save()]);
         }
 
         res.status(200).json();
     } catch (error) {
-        console.log("Error in getCar controller: ", error.message);
+        console.log("Error in unparkCar controller: ", error.message);
         res.status(500).json({ error: "Internal server error" });
     }
 }

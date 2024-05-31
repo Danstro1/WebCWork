@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Управление парковкой</title>
+    <script
+      src="https://api-maps.yandex.ru/2.1/?apikey=2ef6df43-1edd-4098-9b62-293b197ef6bf&lang=ru_RU"
+      type="text/javascript"
+    ></script>
+    <link rel="stylesheet" href="../../style.css" />
+    <link rel="stylesheet" href="parkingControl.css" />
+    <script src="map2.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  </head>
+  <body>
+    <header>
+        <img class="logo" src="../../assets/logo.svg" alt="logo" />
+        <div class="links">
+            <nav class="nav-selected">
+                <a href="../place-car/place-car.html">Управление парковкой</a>
+            </nav>
+        </div>
+        <div class="profile-links">
+            <nav class="exit"><a id="exit" href="../../auth/login/login.html">Выход</a></nav>
+        </div>
+    </header>
+    <div class="main">
+        <div class="yMap">
+            <h1 class="map-header">Карта автостоянок</h1>
+            <div id="map" style="width: 650px; height: 430px"></div>
+        </div>
+        <div class="main">
+            <form class="form-place-car" id="formPlaceCar" action="post">
+              <div class="select">
+                <select class="parking-selection" name="parking" id="parkingId">
+                  <option value="">Выберите стоянку</option>
+                </select>
+              </div>
+                <div class="placeButtons">
+                  <button class="submit-btn confirm-btn" id="addPlaceBtn" type="button">Добавить место</button>
+                  <button class="delete-btn" id="removePlaceBtn" type="button">Удалить место</button>
+                </div>
+            </form>
+            <form id="formChangeCost" action="post">
+                <input type="number" id="newCost" placeholder="Новая стоимость" required />
+                <button class="submit-btn" id="changeCostBtn" type="submit">Изменить стоимость</button>
+            </form>
+        </div>
+    </div>
+    <script src="parking-control.js"></script>
+    <script src="../../exit.js"></script>
+</body>
+</html>

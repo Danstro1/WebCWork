@@ -1,0 +1,18 @@
+.tech-support{
+    font-size: 30px;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+}
+
+.tech-support div{
+    font-size: 40px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: rgba(0, 95, 185, 1);
+    gap: 20px;
+}

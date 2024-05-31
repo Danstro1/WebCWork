@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const carSchema = new mongoose.Schema(
 	{
-		brand: {
+		mark: {
 			type: String,
 			required: true,
 		},		

@@ -76,11 +76,12 @@ h1{
     display: flex;
     padding-top: 40px;
     gap: 50px;
+    flex-direction: column;
+    align-items: center;
 }
 
 #form-control div{
     display: flex;
-    flex-direction: column;
     gap: 30px;
 }
 
@@ -96,18 +97,27 @@ input{
 
 .submit-btn{
     min-width: 190px;
+    max-width: 250px;
     height: 40px;
     font-size: 20px;
     background-color: var(--main-color);
     color: white;
     border-radius: 10px;
     border: none;
-    margin-top: 30px;
+    margin-top: 20px;
     cursor: pointer;
 }
 
 .car-cards{
     padding: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.parking-card{
+    min-height: 450px;
+    min-width: 400px;
 }
 
 .card-car{
@@ -254,15 +264,14 @@ select::-ms-expand {
 
 .personal-info{
     position: absolute;
-    top: 35%;
-    left: 35%;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
     gap: 30px;
     width: 250px;
     font-size: 20px;
-    margin: 170px 0 0 200px;
     align-items: center;
 }
 
@@ -276,9 +285,8 @@ select::-ms-expand {
 }
 
 .personal-info-change{
-    position: absolute;
-    top: 150px;
-    left: 505px;
+    width: 500px;
+    margin-bottom: 20px;
 }
 
 .login-reg {
@@ -304,7 +312,7 @@ select::-ms-expand {
 
 .login-reg .log{
     position: absolute;
-    top: 420px;
+    top: 470px;
     font-size: 18px;
 }
 
@@ -323,4 +331,12 @@ select::-ms-expand {
 
 .d-none{
     display: none;
+}
+
+.red-border{
+    border-color: red;
+}
+
+#message{
+    top: 500px;
 }

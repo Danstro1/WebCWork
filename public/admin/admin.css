@@ -1,0 +1,44 @@
+.submit-btn {
+    max-width: 300px;
+}
+
+#workersTable {
+    position: absolute;
+    border-collapse: collapse;
+    width: 600px;
+    top: 30%;
+    left: 1%;
+    font-size: 18px;
+}
+
+th,
+td {
+    border: 1px solid;
+    padding: 8px;
+}
+
+th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #f2f2f2;
+    color: black;
+}
+
+.worker-delete-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 7px 17px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.worker-delete-btn:hover {
+    background-color: #d32f2f;
+}
